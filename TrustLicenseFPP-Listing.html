@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Listino Interattivo — TrustLicense</title>
+<style>
+  /* --- Impostazioni Globali e Variabili --- */
+  :root {
+    --bg-color: #f4f7f9;
+    --card-bg: #ffffff;
+    --text-color: #2c3e50;
+    --muted-color: #7f8c8d;
+    --accent-color: #2980b9;
+    --border-color: #e2e8f0;
+    --shadow-color: rgba(44, 62, 80, 0.1);
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Watermark Sottile --- */
+  body::before {
+    content: "TrustLicense.net";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-25deg);
+    font-size: 9vw;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.04);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* --- Struttura Principale --- */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background-color: var(--card-bg);
+    padding: 16px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px var(--shadow-color);
+    margin-bottom: 24px;
+  }
+  
+  .page-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: var(--accent-color);
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  .controls input, .controls select {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: #fff;
+    font-size: 14px;
+    min-width: 200px;
+  }
+  
+  .controls input:focus, .controls select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.2);
+  }
+
+  .print-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .print-btn:hover {
+    background-color: #3498db;
+  }
+
+  /* --- Info Documento --- */
+  .doc-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    padding: 12px 16px;
+    background-color: #e8f0f4;
+    border: 1px solid #d0dde5;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: var(--muted-color);
+  }
+
+  .doc-info strong {
+    color: var(--text-color);
+  }
+
+  /* --- NUOVO BANNER --- */
+  .info-banner-alert {
+    padding: 12px 16px;
+    background-color: #fbe9e7;
+    border: 1px solid #ffcdd2;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #c62828;
+    text-align: left; /* Modificato qui per allineamento a sinistra */
+  }
+  .info-banner-alert a {
+    color: #c62828;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+  .info-banner-alert a:hover {
+    text-decoration: none;
+  }
+  /* --- FINE NUOVO BANNER --- */
+
+  /* --- Griglia e Card --- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(44, 62, 80, 0.15);
+  }
+
+  .card-content {
+    padding: 20px;
+    flex-grow: 1; /* Spinge il footer in basso */
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-icon {
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .card-category {
+    font-size: 13px;
+    color: var(--muted-color);
+    margin-bottom: 16px;
+  }
+  
+  .card-footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .price-label {
+    font-size: 12px;
+    color: var(--muted-color);
+    font-weight: 500;
+  }
+  
+  /* Stile per il contenitore del canvas, non per il canvas stesso */
+  .price-canvas-container {
+    min-height: 28px; /* Altezza fissa per allineamento */
+  }
+
+  /* --- Footer Pagina --- */
+  .page-footer {
+    text-align: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-color);
+    font-size: 13px;
+    color: var(--muted-color);
+  }
+  
+  /* --- Stili per la stampa --- */
+  @media print {
+    body {
+      background-color: #fff;
+    }
+    .page-header, .doc-info, .info-banner-alert, .page-footer {
+      display: none;
+    }
+    .container {
+      padding: 0;
+    }
+    .card {
+      box-shadow: none;
+      border: 1px solid #ccc;
+      page-break-inside: avoid;
+    }
+  }
+
+  /* --- Responsività Mobile --- */
+  @media (max-width: 768px) {
+    .container {
+      padding: 16px;
+    }
+    .page-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .controls {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .doc-info {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="page-header">
+      <h1>Listino Prodotti FPP | Ingrosso</h1>
+      <div class="controls" role="toolbar">
+        <input id="search" type="search" class="search-input" placeholder="Cerca prodotto..." aria-label="Cerca prodotto">
+        <select id="filter" class="filter-select" aria-label="Filtra per categoria">
+          <option value="">Tutte le categorie</option>
+          <option value="Windows">Windows</option>
+          <option value="Windows Server">Windows Server</option>
+          <option value="Office">Office</option>
+        </select>
+        <button id="printBtn" class="print-btn">Stampa / PDF</button>
+      </div>
+    </header>
+
+    <div class="doc-info">
+      <span><strong>Azienda:</strong> TrustLicense</span>
+      <span><strong>Microsoft Partner ID:</strong> 7011358</span>
+      <span><strong>DUNS Number:</strong> 508785171</span>
+    </div>
+
+    <div class="info-banner-alert">
+      Our products follow Microsoft anti-counterfeiting guidelines, available at: 
+      <a href="https://www.microsoft.com/en-us/howtotell/software-packaged" target="_blank" rel="noopener noreferrer">Official Microsoft Guide</a>
+    </div>
+
+    <main>
+      <section id="grid" class="grid"></section>
+    </main>
+
+    <footer class="page-footer">
+      Documento riservato alle aziende - TrustLicense.net © | Desideri un listino React come questo? Contattaci su WhastApp
+    </footer>
+  </div>
+
+<script>
+/* --- Funzionalità Base --- */
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.documentElement.classList.add('no-select');
+
+const prodotti = [
+  { nome: "Windows 11 Pro Sticker", prezzo: 3, categoria: "Windows" },
+  { nome: "Windows 11 Pro DVD Pack", prezzo: 9, categoria: "Windows" },
+  { nome: "Windows 11 Pro USB Box", prezzo: 15, categoria: "Windows" },
+  { nome: "Windows 11 Home Sticker", prezzo: 3, categoria: "Windows" },
+  { nome: "Windows 11 Home DVD Pack", prezzo: 9, categoria: "Windows" },
+  { nome: "Windows 11 Home USB Box", prezzo: 15, categoria: "Windows" },
+  { nome: "Windows 10 Pro Sticker", prezzo: 3, categoria: "Windows" },
+  { nome: "Windows 10 Pro DVD Pack", prezzo: 9, categoria: "Windows" },
+  { nome: "Windows 10 Pro USB Box", prezzo: 14, categoria: "Windows" },
+  { nome: "Windows 10 Home Sticker", prezzo: 3, categoria: "Windows" },
+  { nome: "Windows 10 Home DVD Pack", prezzo: 9, categoria: "Windows" },
+  { nome: "Windows 10 Home USB Box", prezzo: 14, categoria: "Windows" },
+  { nome: "Windows Server 2022 Std Sticker", prezzo: 8, categoria: "Windows Server" },
+  { nome: "Windows Server 2022 Std DVD", prezzo: 10, categoria: "Windows Server" },
+  { nome: "Windows Server 2022 Datacenter Sticker", prezzo: 8, categoria: "Windows Server" },
+  { nome: "Windows Server 2022 Datacenter DVD", prezzo: 10, categoria: "Windows Server" },
+  { nome: "Windows Server 2019 Std Sticker", prezzo: 7, categoria: "Windows Server" },
+  { nome: "Windows Server 2019 Std DVD", prezzo: 9, categoria: "Windows Server" },
+  { nome: "Windows Server 2019 Datacenter Sticker", prezzo: 7, categoria: "Windows Server" },
+  { nome: "Windows Server 2019 Datacenter DVD", prezzo: 9, categoria: "Windows Server" },
+  { nome: "Windows Server 2025 Std Sticker", prezzo: 10, categoria: "Windows Server" },
+  { nome: "Windows Server 2025 Datacenter Sticker", prezzo: 10, categoria: "Windows Server" },
+  { nome: "Windows Server 2025 Std DVD", prezzo: 15, categoria: "Windows Server" },
+  { nome: "Windows Server 2025 Datacenter DVD", prezzo: 15, categoria: "Windows Server" },
+  { nome: "Office 2021 Pro Plus Online Keycard", prezzo: 28, categoria: "Office" },
+  { nome: "Office 2021 Pro Plus Online DVD", prezzo: 36, categoria: "Office" },
+  { nome: "Office 2021 Pro Plus Online USB", prezzo: 38, categoria: "Office" },
+  { nome: "Office 2019 Pro Plus Online Keycard", prezzo: 12, categoria: "Office" },
+  { nome: "Office 2019 Pro Plus Online DVD", prezzo: 14, categoria: "Office" },
+  { nome: "Office 2019 Pro Plus Online USB", prezzo: 15, categoria: "Office" },
+  { nome: "Office 2021 Home & Business Mac Keycard", prezzo: 50, categoria: "Office" },
+  { nome: "Office 2019 Home & Business Mac Keycard Box", prezzo: 20, categoria: "Office" },
+];
+
+function getIcon(nome) {
+  const n = nome.toLowerCase();
+  if (n.includes("dvd")) return "💿";
+  if (n.includes("usb")) return "💽"; 
+  if (n.includes("sticker")) return "🏷️";
+  if (n.includes("keycard") || n.includes("box")) return "📦";
+  return "🔑";
+}
+
+function renderPriceCanvas(container, prezzoOriginale) {
+  const prezzo = (parseFloat(prezzoOriginale) || 0) * 2;
+  const text = `€ ${prezzo.toFixed(2)}`;
+
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const scale = window.devicePixelRatio || 1;
+  const fontSize = 20;
+  const fontWeight = '700';
+  const fontFamily = 'Roboto, Arial, sans-serif';
+  
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+  const textMetrics = ctx.measureText(text);
+  const w = Math.ceil(textMetrics.width);
+  const h = fontSize;
+
+  canvas.width = w * scale;
+  canvas.height = h * scale;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  
+  ctx.scale(scale, scale);
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+  ctx.fillStyle = '#2c3e50';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText(text, 0, 0);
+
+  container.innerHTML = '';
+  container.appendChild(canvas);
+}
+
+function buildCard(p) {
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.innerHTML = `
+    <div class="card-content">
+      <div class="card-icon" aria-hidden="true">${getIcon(p.nome)}</div>
+      <h3 class="card-title">${escapeHtml(p.nome)}</h3>
+      <p class="card-category">${escapeHtml(p.categoria)}</p>
+    </div>
+    <div class="card-footer">
+      <span class="price-label">IVA inclusa nel prezzo</span>
+      <div class="price-canvas-container" data-price="${p.prezzo}"></div>
+    </div>
+  `;
+  return card;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+}
+
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('search');
+const filterSelect = document.getElementById('filter');
+const printBtn = document.getElementById('printBtn');
+
+function render() {
+  const query = (searchInput.value || '').toLowerCase().trim();
+  const category = filterSelect.value;
+
+  const filtered = prodotti.filter(p => {
+    const matchesCategory = !category || p.categoria === category;
+    const matchesQuery = !query || p.nome.toLowerCase().includes(query) || p.categoria.toLowerCase().includes(query);
+    return matchesCategory && matchesQuery;
+  });
+
+  grid.innerHTML = '';
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; color: var(--muted-color);">Nessun prodotto trovato.</p>';
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  filtered.forEach(p => fragment.appendChild(buildCard(p)));
+  grid.appendChild(fragment);
+
+  grid.querySelectorAll('.price-canvas-container').forEach(el => {
+    renderPriceCanvas(el, el.getAttribute('data-price'));
+  });
+}
+
+function debounce(fn, wait = 200) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), wait);
+  };
+}
+
+searchInput.addEventListener('input', debounce(render));
+filterSelect.addEventListener('change', render);
+printBtn.addEventListener('click', () => window.print());
+
+document.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>
